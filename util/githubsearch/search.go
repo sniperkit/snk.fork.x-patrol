@@ -107,10 +107,12 @@ func SaveResult(results []*github.CodeSearchResult, err error) () {
 					exist, err := codeResult.Exist()
 					if err == nil && !exist {
 						insertCount++
-						logger.Log.Infoln(codeResult.Insert())
+						//logger.Log.Infoln(codeResult.Insert())
 					}
 				}
 			}
+		} else {
+			logger.Log.Info(err)
 		}
 		logger.Log.Infof("Has inserted %d results into code_result", insertCount)
 	}
