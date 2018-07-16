@@ -89,25 +89,27 @@ func SaveResult(results []*github.CodeSearchResult, err error) () {
 	insertCount := 0
 	for _, result := range results {
 		if err == nil && len(result.CodeResults) > 0 {
-			for _, resultItem := range result.CodeResults {
+ 			for _, resultItem := range result.CodeResults {
 				ret, err := json.Marshal(resultItem)
 				if err == nil {
 					var codeResult *models.CodeResult
+
 					err = json.Unmarshal(ret, &codeResult)
 					fullName := codeResult.Repository.GetFullName()
-					repoUrl := codeResult.Repository.GetHTMLURL()
+					//repoUrl := codeResult.Repository.GetHTMLURL()
 					codeResult.RepoName = fullName
 
-					inputInfo := models.NewInputInfo("repo", repoUrl, fullName)
-					has, err := inputInfo.Exist(repoUrl)
-
-					if err == nil && !has {
-						inputInfo.Insert()
-					}
+					//inputInfo := models.NewInputInfo("repo", repoUrl, fullName)
+					//has, err := inputInfo.Exist(repoUrl)
+					//
+					//if err == nil && !has {
+					//	inputInfo.Insert()
+					//}
 					exist, err := codeResult.Exist()
+					logger.Log.Infoln(exist, err)
 					if err == nil && !exist {
+						logger.Log.Infoln(codeResult.Insert())
 						insertCount++
-						//logger.Log.Infoln(codeResult.Insert())
 					}
 				}
 			}

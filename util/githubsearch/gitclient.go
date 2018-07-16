@@ -183,7 +183,6 @@ func BuildQuery(query string) (string, error) {
 func searchCodeByOpt(c *Client, ctx context.Context, query string, opt github.SearchOptions) (*github.CodeSearchResult, int) {
 	result, res, err := c.Client.Search.Code(ctx, query, &opt)
 
-
 	if res != nil && res.Remaining < 10 {
 		time.Sleep(60 * time.Second)
 	}
@@ -194,5 +193,6 @@ func searchCodeByOpt(c *Client, ctx context.Context, query string, opt github.Se
 		logger.Log.Infoln(err)
 		return nil, 0
 	}
+
 	return result, res.NextPage
 }
