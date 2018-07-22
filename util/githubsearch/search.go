@@ -85,6 +85,7 @@ func RunSearchTask(mapRules map[int][]models.Rule, err error) () {
 	}
 }
 
+
 func SaveResult(results []*github.CodeSearchResult, err error) () {
 	insertCount := 0
 	for _, result := range results {
@@ -108,7 +109,7 @@ func SaveResult(results []*github.CodeSearchResult, err error) () {
 					exist, err := codeResult.Exist()
 					logger.Log.Infoln(exist, err)
 					if err == nil && !exist {
-						logger.Log.Infoln(codeResult.Insert())
+						codeResult.Insert()
 						insertCount++
 					}
 				}
