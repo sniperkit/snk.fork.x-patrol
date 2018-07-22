@@ -64,9 +64,9 @@ func Search(rules []models.Rule) () {
 			go func(rule models.Rule) {
 				defer wg.Done()
 
+				SaveResult(client.SearchCode(rule.Pattern))
 			}(rule)
 
-			SaveResult(client.SearchCode(rule.Pattern))
 		}
 		wg.Wait()
 	}
@@ -97,9 +97,9 @@ func SaveResult(results []*github.CodeSearchResult, err error) () {
 
 					err = json.Unmarshal(ret, &codeResult)
 					fullName := codeResult.Repository.GetFullName()
-					//repoUrl := codeResult.Repository.GetHTMLURL()
 					codeResult.RepoName = fullName
 
+					//repoUrl := codeResult.Repository.GetHTMLURL()
 					//inputInfo := models.NewInputInfo("repo", repoUrl, fullName)
 					//has, err := inputInfo.Exist(repoUrl)
 					//
@@ -114,8 +114,6 @@ func SaveResult(results []*github.CodeSearchResult, err error) () {
 					}
 				}
 			}
-		} else {
-			logger.Log.Info(err)
 		}
 		logger.Log.Infof("Has inserted %d results into code_result", insertCount)
 	}
